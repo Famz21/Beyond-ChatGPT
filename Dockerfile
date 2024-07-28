@@ -11,22 +11,20 @@ ENV HOME=/home/user \
 # Switch to non-root user
 USER user
 
-# Create and activate virtual environment
-RUN python -m venv $VIRTUAL_ENV
-
 # Set working directory
 WORKDIR $HOME/app
 
+# Create and activate virtual environment
+RUN python -m venv $VIRTUAL_ENV
+
 # Copy application code and requirements
-COPY --chown=user . $HOME/app
-COPY ./requirements.txt $HOME/app/requirements.txt
-COPY .env $HOME/app/.env
+COPY --chown=user requirements.txt $HOME/app/requirements.txt
 
 # Install dependencies, including python-dotenv for .env file support
-RUN pip install -r requirements.txt && pip install python-dotenv
+RUN pip install -r requirements.txt
 
 # Copy the rest of the application code
-COPY . .
+COPY --chown=user . $HOME/app
 
 # Define the default command
 CMD ["chainlit", "run", "app.py", "--port", "7860"]
