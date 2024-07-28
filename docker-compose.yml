@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: my_app_container
+    ports:
+      - "7860:7860"
+    volumes:
+      - .:/home/user/app
+    env_file:
+      - .env
+    environment:
+      - HOME=/home/user
+      - VIRTUAL_ENV=/home/user/venv
+      - PATH=/home/user/venv/bin:$PATH
+    command: ["chainlit", "run", "app.py", "--port", "7860"]
